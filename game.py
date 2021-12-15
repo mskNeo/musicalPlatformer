@@ -22,9 +22,13 @@ pygame.display.set_caption("CPSC 431: Musical Platformer")
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__() 
+        self.platformsHit = 0
+        self.onPlatform = False
         self.surf = pygame.Surface((30, 30))
         self.surf.fill((0, 0, 255))
         self.rect = self.surf.get_rect(center = (10, HEIGHT - 25))
+        self.start_x = 10
+        self.start_y = HEIGHT - 25
 
         self.pos = vec((10, HEIGHT - 45))
         self.vel = vec(0,0)
@@ -55,6 +59,7 @@ class Player(pygame.sprite.Sprite):
         hits = pygame.sprite.spritecollide(self, platforms, False)
         if hits:
             self.vel.y = -15
+            self.onPlatform = False
 
     def update(self):
         hits = pygame.sprite.spritecollide(self, platforms, False)
@@ -64,12 +69,19 @@ class Player(pygame.sprite.Sprite):
                 self.pos.y = hits[0].rect.top + 1
                 if (not hits[0].floor):
                     hits[0].surf.fill((0, 0, 255))
-                    client.hitObj(type(hits[0]).__name__)    # send message to play chord here
+                    if (not self.onPlatform):
+                        client.hitPlatform(self.platformsHit) 
+                        self.platformsHit = self.platformsHit + 1
+                        self.onPlatform = True
 
         # remake map when get to goal
         goalHits = pygame.sprite.spritecollide(self, items, False)
         if goalHits:
-            client.hitObj(type(goalHits[0]).__name__)    # send message to play chord here
+            client.hitGoal()    # send message to play chord here
+            self.platformsHit = 0
+            P1.rect.x = P1.start_x
+            P1.rect.y = P1.start_y
+            P1.pos = vec((P1.start_x, P1.start_y ))
             platforms.empty()
             platforms.add(PT1)
             generatePlatforms()
@@ -97,9 +109,8 @@ class item(pygame.sprite.Sprite):
         pass
 
 def generatePlatforms():
-    P1.rect = P1.surf.get_rect(center = (10, HEIGHT - 25))
     items.add(GOAL)
-    numPlats = random.randint(5, 6)
+    numPlats = 5
     sections = [x for x in range(numPlats)]
     xSection = random.choice(sections)
 

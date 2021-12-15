@@ -1,9 +1,11 @@
 (
-s.waitForBoot{
+s.waitForBoot {
 	~major = Scale.major; // a major scale.
 	c = 60;
 	d = 62;
 	g = 55;
+
+	~port = 57120;
 
 	// list of scale degree chords
 	~tonic = [0,2,4];
@@ -64,33 +66,49 @@ s.waitForBoot{
 	];
 
 	~current = 'c';
+	~key = 'c';
 
-	n = NetAddr("127.0.0.1", /1337);
+	n = NetAddr("127.0.0.1", ~port);
 	x = OSCFunc({ | msg, time, addr, recvPort |
-		msg.post;
-		/*
-		~msg = msg[0];
-		if (~msg == True, ~key = ~current);
-		if (~msg ==
-		if ((~key == 'c' and ~current == 'c'),
+		msg.postln;
+		~msg = msg[1];
+		if (~msg == 'platform', {~key = ~current});
+		if (~msg == 'goal', {
+			if (~current == 'c', {
+				~key = ['g', 'd'].choose;
+			});
+			if (~current == 'g', {
+				~key = ['c', 'd'].choose;
+			});
+			if (~current == 'd', {
+				~key = ['g', 'c'].choose;
+			});
+		});
+
+
+
+		if ((~key == 'c' && ~current == 'c'),
 			{~prog = ~chordsInC.choose;
 			 ~progression = Array.with(~majorChordGen.value(c, ~prog[0]), ~majorChordGen.value(c, ~prog[1]), ~majorChordGen.value(c, ~prog[2]), ~majorChordGen.value(c, ~prog[3]));
 			 ~current = 'c';
 			};
 		);
-		if ((~key == 'g' and ~current == 'g'),
+		if ((~key == 'g' && ~current == 'g'),
 			{~prog = ~chordsInG.choose;
 			 ~progression = Array.with(~majorChordGen.value(g, ~prog[0]), ~majorChordGen.value(g, ~prog[1]), ~majorChordGen.value(g, ~prog[2]), ~majorChordGen.value(g, ~prog[3]));
 			 ~current = 'g';
 			};
 		);
-		if ((~key == 'd' and ~current == 'd'),
+		if ((~key == 'd' && ~current == 'd'),
 			{~prog = ~chordsInD.choose;
 			 ~progression = Array.with(~majorChordGen.value(d, ~prog[0]), ~majorChordGen.value(d, ~prog[1]), ~majorChordGen.value(d, ~prog[2]), ~majorChordGen.value(d, ~prog[3]));
 			 ~current = 'd';
 			};
 		);
-		if ((~key == 'd' and ~current == 'c'),
+
+
+
+		if ((~key == 'd' && ~current == 'c'),
 			{var option = [0, 1].choose;
 				if (option == 0,
 					{~progression = Array.with(~majorChordGen.value(d, ~supertonic), ~majorChordGen.value(d, ~dominant), ~majorChordGen.value(d, ~tonic))});
@@ -99,7 +117,7 @@ s.waitForBoot{
 			 ~current = 'd';
 			};
 		);
-		if ((~key == 'd' and ~current == 'g'),
+		if ((~key == 'd' && ~current == 'g'),
 			{var option = [0, 1].choose;
 				if (option == 0,
 					{~progression =  Array.with(~majorChordGen.value(g, ~submediant), ~majorChordGen.value(d, ~subdominant), ~majorChordGen.value(d, ~tonic))});
@@ -108,7 +126,7 @@ s.waitForBoot{
 			 ~current = 'd';
 			};
 		);
-		if ((~key == 'g' and ~current == 'c'),
+		if ((~key == 'g' && ~current == 'c'),
 			{var option = [0, 1].choose;
 				if (option == 0,
 					{~progression = Array.with(~majorChordGen.value(c, ~subdominant), ~majorCordGen.value(c, ~supertonic)[1] = ~majorChordGen.value(c, ~supertonic)[1] + 1, ~majorChordGen.value(g, ~tonic))});
@@ -117,7 +135,7 @@ s.waitForBoot{
 			 ~current = 'g';
 			};
 		);
-		if ((~key == 'g' and ~current == 'd'),
+		if ((~key == 'g' && ~current == 'd'),
 			{var option = [0, 1].choose;
 				if (option == 0,
 					{~progression = Array.with(~majorChordGen.value(d, ~supertonic), ~majorChordGen.value(g, ~dominant), ~majorChordGen.value(g, ~tonic))});
@@ -126,7 +144,7 @@ s.waitForBoot{
 			 ~current = 'g';
 			};
 		);
-		if ((~key == 'c' and ~current == 'g'),
+		if ((~key == 'c' && ~current == 'g'),
 			{var option = [0, 1].choose;
 				if (option == 0,
 					{~progression = Array.with(~majorChordGen.value(g, ~supertonic), ~majorChordGen.value(c, ~subdominant), ~majorChordGen.value(c, ~dominant), ~majorChordGen.value(c, ~tonic))});
@@ -135,7 +153,7 @@ s.waitForBoot{
 			 ~current = 'c';
 			};
 		);
-		if ((~key == 'c' and ~current == 'd'),
+		if ((~key == 'c' && ~current == 'd'),
 			{var option = [0, 1].choose;
 				if (option == 0,
 					{~progression = Array.with(~majorChordGen.value(d, ~supertonic), ~majorChordGen.value(d, ~subdominant), ~majorChordGen.value(c, ~tonic))});
@@ -145,7 +163,8 @@ s.waitForBoot{
 			};
 		);
 
+
 		Pbind(\midinote, Pseq(~progression)).play;
-	}, '/chat', n);*/
+	}, '/hit');
 }
 )

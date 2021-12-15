@@ -13,8 +13,8 @@ To run the project, you will need to have two separate Terminal windows/tabs as 
 The Terminal windows will be used to run the Python code.
 
 #### Running Python Code
-Run `python3 server.py` to run the Python OSC server so it can communicate with SuperCollider3.
-Run `python3 game.py` to run the actual game.
+Run `python3 game.py` to run the game.
+Run `python3 server.py` to see the messages in action if you would like but do not run it with SuperCollider3 at the same time.
 
 #### Running SuperCollider3 Code
 

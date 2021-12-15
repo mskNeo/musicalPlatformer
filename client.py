@@ -1,9 +1,12 @@
 from pythonosc.udp_client import SimpleUDPClient
 
 ip = "127.0.0.1"
-port = 1337
+port = 57120
 
 client = SimpleUDPClient(ip, port)
 
-def hitObj(obj): 
-    client.send_message(f"/event/hit/{obj}", True)   # Send float message
+def hitPlatform(num): 
+    client.send_message("/hit", ["platform", num])   # Send float message
+
+def hitGoal(): 
+    client.send_message("/hit", "goal")   # Send float message

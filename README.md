@@ -9,7 +9,8 @@ To set up the project, simply install all dependencies listed in **requirements.
 Run the following command: `pip -r requirements.txt`
 
 ### Running the Project
-To run the project, you will need to have two separate Terminal windows/tabs as well as the SuperCollider3 project open.
+To run the project, you will need to have two separate Terminal windows/tabs as well as the SuperCollider3 project open. 
+The Terminal windows will be used to run the Python code.
 
 #### Running Python Code
 Run `python3 server.py` to run the Python OSC server so it can communicate with SuperCollider3.

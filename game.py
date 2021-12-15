@@ -110,7 +110,7 @@ class item(pygame.sprite.Sprite):
 
 def generatePlatforms():
     items.add(GOAL)
-    numPlats = 5
+    numPlats = 4
     sections = [x for x in range(numPlats)]
     xSection = random.choice(sections)
 

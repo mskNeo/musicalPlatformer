@@ -72,6 +72,7 @@ s.waitForBoot {
 	x = OSCFunc({ | msg, time, addr, recvPort |
 		msg.postln;
 		~msg = msg[1];
+		~val = msg[2];
 		if (~msg == 'platform', {~key = ~current});
 		if (~msg == 'goal', {
 			if (~current == 'c', {
@@ -86,85 +87,94 @@ s.waitForBoot {
 		});
 
 
-
-		if ((~key == 'c' && ~current == 'c'),
-			{~prog = ~chordsInC.choose;
-			 ~progression = Array.with(~majorChordGen.value(c, ~prog[0]), ~majorChordGen.value(c, ~prog[1]), ~majorChordGen.value(c, ~prog[2]), ~majorChordGen.value(c, ~prog[3]));
-			 ~current = 'c';
-			};
-		);
-		if ((~key == 'g' && ~current == 'g'),
-			{~prog = ~chordsInG.choose;
-			 ~progression = Array.with(~majorChordGen.value(g, ~prog[0]), ~majorChordGen.value(g, ~prog[1]), ~majorChordGen.value(g, ~prog[2]), ~majorChordGen.value(g, ~prog[3]));
-			 ~current = 'g';
-			};
-		);
-		if ((~key == 'd' && ~current == 'd'),
-			{~prog = ~chordsInD.choose;
-			 ~progression = Array.with(~majorChordGen.value(d, ~prog[0]), ~majorChordGen.value(d, ~prog[1]), ~majorChordGen.value(d, ~prog[2]), ~majorChordGen.value(d, ~prog[3]));
-			 ~current = 'd';
-			};
-		);
-
-
-
-		if ((~key == 'd' && ~current == 'c'),
-			{var option = [0, 1].choose;
-				if (option == 0,
-					{~progression = Array.with(~majorChordGen.value(d, ~supertonic), ~majorChordGen.value(d, ~dominant), ~majorChordGen.value(d, ~tonic))});
-				if (option == 1,
-					{~progression = Array.with(~majorChordGen.value(d, ~subdominant), ~majorChordGen.value(d, ~dominant), ~majorChordGen.value(d, ~tonic))});
-			 ~current = 'd';
-			};
-		);
-		if ((~key == 'd' && ~current == 'g'),
-			{var option = [0, 1].choose;
-				if (option == 0,
-					{~progression =  Array.with(~majorChordGen.value(g, ~submediant), ~majorChordGen.value(d, ~subdominant), ~majorChordGen.value(d, ~tonic))});
-				if (option == 1,
-					{~progression = Array.with(~majorChordGen.value(g, ~mediant), ~majorChordGen.value(g, ~supertonic)[1] = ~majorChordGen.value(g, ~supertonic)[1] + 1, ~majorChordGen.value(d, ~tonic))});
-			 ~current = 'd';
-			};
-		);
-		if ((~key == 'g' && ~current == 'c'),
-			{var option = [0, 1].choose;
-				if (option == 0,
-					{~progression = Array.with(~majorChordGen.value(c, ~subdominant), ~majorCordGen.value(c, ~supertonic)[1] = ~majorChordGen.value(c, ~supertonic)[1] + 1, ~majorChordGen.value(g, ~tonic))});
-				if (option == 1,
-					{~progression = Array.with(~majorChordGen.value(c, ~submediant), ~majorChordGen.value(c, ~supertonic)[1] = ~majorChordGen.value(c, ~supertonic)[1] + 1, ~majorChordGen.value(c, ~dominant))});
-			 ~current = 'g';
-			};
-		);
-		if ((~key == 'g' && ~current == 'd'),
-			{var option = [0, 1].choose;
-				if (option == 0,
-					{~progression = Array.with(~majorChordGen.value(d, ~supertonic), ~majorChordGen.value(g, ~dominant), ~majorChordGen.value(g, ~tonic))});
-				if (option == 1,
-					{~progression = Array.with(~majorChordGen.value(d, ~submediant), ~majorChordGen.value(d, ~dominant)[1] = ~majorChordGen.value(d, ~dominant)[1] + 1, ~majorChordGen.value(g , ~tonic))});
-			 ~current = 'g';
-			};
-		);
-		if ((~key == 'c' && ~current == 'g'),
-			{var option = [0, 1].choose;
-				if (option == 0,
-					{~progression = Array.with(~majorChordGen.value(g, ~supertonic), ~majorChordGen.value(c, ~subdominant), ~majorChordGen.value(c, ~dominant), ~majorChordGen.value(c, ~tonic))});
-				if (option == 1,
-					{~progression = Array.with(~majorChordGen.value(g, ~subdominant), ~majorChordGen.value(c, ~subdominant), ~majorChordGen.value(c, ~tonic))});
-			 ~current = 'c';
-			};
-		);
-		if ((~key == 'c' && ~current == 'd'),
-			{var option = [0, 1].choose;
-				if (option == 0,
-					{~progression = Array.with(~majorChordGen.value(d, ~supertonic), ~majorChordGen.value(d, ~subdominant), ~majorChordGen.value(c, ~tonic))});
-				if (option == 1,
-					{~progression = Array.with(~majorChordGen.value(d, ~subdominant), ~majorChordGen.value(c, ~supertonic), ~majorChordGen.value(c, ~dominant), ~majorChordGen.value(c, ~tonic))});
-			 ~current = 'c';
-			};
-		);
+		if ((~msg == 'platform' && ~val == 0), {
+			if ((~key == 'c' && ~current == 'c'),
+				{~prog = ~chordsInC.choose;
+					~progression = Array.with(~majorChordGen.value(c, ~prog[0]), ~majorChordGen.value(c, ~prog[1]), ~majorChordGen.value(c, ~prog[2]), ~majorChordGen.value(c, ~prog[3]));
+					~current = 'c';
+				};
+			);
+			if ((~key == 'g' && ~current == 'g'),
+				{~prog = ~chordsInG.choose;
+					~progression = Array.with(~majorChordGen.value(g, ~prog[0]), ~majorChordGen.value(g, ~prog[1]), ~majorChordGen.value(g, ~prog[2]), ~majorChordGen.value(g, ~prog[3]));
+					~current = 'g';
+				};
+			);
+			if ((~key == 'd' && ~current == 'd'),
+				{~prog = ~chordsInD.choose;
+					~progression = Array.with(~majorChordGen.value(d, ~prog[0]), ~majorChordGen.value(d, ~prog[1]), ~majorChordGen.value(d, ~prog[2]), ~majorChordGen.value(d, ~prog[3]));
+					~current = 'd';
+				};
+			);
+		});
 
 
-		Pbind(\midinote, Pseq(~progression)).play;
+		if (~msg == 'goal', {
+			if ((~key == 'd' && ~current == 'c'),
+				{var option = [0, 1].choose;
+					if (option == 0,
+						{~progression = Array.with(~majorChordGen.value(d, ~supertonic), ~majorChordGen.value(d, ~dominant), ~majorChordGen.value(d, ~tonic))});
+					if (option == 1,
+						{~progression = Array.with(~majorChordGen.value(d, ~subdominant), ~majorChordGen.value(d, ~dominant), ~majorChordGen.value(d, ~tonic))});
+					~current = 'd';
+				};
+			);
+			if ((~key == 'd' && ~current == 'g'),
+				{var option = [0, 1].choose;
+					if (option == 0,
+						{~progression =  Array.with(~majorChordGen.value(g, ~submediant), ~majorChordGen.value(d, ~subdominant), ~majorChordGen.value(d, ~tonic))});
+					if (option == 1,
+						{~progression = Array.with(~majorChordGen.value(g, ~mediant), ~majorChordGen.value(g, ~supertonic)[1] = ~majorChordGen.value(g, ~supertonic)[1] + 1, ~majorChordGen.value(d, ~tonic))});
+					~current = 'd';
+				};
+			);
+			if ((~key == 'g' && ~current == 'c'),
+				{var option = [0, 1].choose;
+					if (option == 0,
+						{~progression = Array.with(~majorChordGen.value(c, ~subdominant), ~majorCordGen.value(c, ~supertonic)[1] = ~majorChordGen.value(c, ~supertonic)[1] + 1, ~majorChordGen.value(g, ~tonic))});
+					if (option == 1,
+						{~progression = Array.with(~majorChordGen.value(c, ~submediant), ~majorChordGen.value(c, ~supertonic)[1] = ~majorChordGen.value(c, ~supertonic)[1] + 1, ~majorChordGen.value(c, ~dominant))});
+					~current = 'g';
+				};
+			);
+			if ((~key == 'g' && ~current == 'd'),
+				{var option = [0, 1].choose;
+					if (option == 0,
+						{~progression = Array.with(~majorChordGen.value(d, ~supertonic), ~majorChordGen.value(g, ~dominant), ~majorChordGen.value(g, ~tonic))});
+					if (option == 1,
+						{~progression = Array.with(~majorChordGen.value(d, ~submediant), ~majorChordGen.value(d, ~dominant)[1] = ~majorChordGen.value(d, ~dominant)[1] + 1, ~majorChordGen.value(g , ~tonic))});
+					~current = 'g';
+				};
+			);
+			if ((~key == 'c' && ~current == 'g'),
+				{var option = [0, 1].choose;
+					if (option == 0,
+						{~progression = Array.with(~majorChordGen.value(g, ~supertonic), ~majorChordGen.value(c, ~subdominant), ~majorChordGen.value(c, ~dominant), ~majorChordGen.value(c, ~tonic))});
+					if (option == 1,
+						{~progression = Array.with(~majorChordGen.value(g, ~subdominant), ~majorChordGen.value(c, ~subdominant), ~majorChordGen.value(c, ~tonic))});
+					~current = 'c';
+				};
+			);
+			if ((~key == 'c' && ~current == 'd'),
+				{var option = [0, 1].choose;
+					if (option == 0,
+						{~progression = Array.with(~majorChordGen.value(d, ~supertonic), ~majorChordGen.value(d, ~subdominant), ~majorChordGen.value(c, ~tonic))});
+					if (option == 1,
+						{~progression = Array.with(~majorChordGen.value(d, ~subdominant), ~majorChordGen.value(c, ~supertonic), ~majorChordGen.value(c, ~dominant), ~majorChordGen.value(c, ~tonic))});
+					~current = 'c';
+				};
+			);
+		});
+
+		if (~msg == 'platform', {
+			Pbind(\midinote, Pseq([~progression[~val], Rest(1)])).play;
+		});
+		if (~msg == 'goal', {
+			Pbind(\midinote, Pseq(~progression)).play;
+			~progression.postln;
+		});
+
+
 	}, '/hit');
 }
 )
